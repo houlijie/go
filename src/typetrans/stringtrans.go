@@ -33,10 +33,14 @@ func main() {
 	str1 := strconv.FormatFloat(n2, 'f', 10, 64)
 	fmt.Printf(str1, "\n") // 1
 
-	// =========string转基本类型 strconv包=====
-	// ParseInt==Itoa ParseUint ParseFloat ParseBool
 	var num int = 4567
-	str = strconv.Itoa(num)
+	str = strconv.Itoa(num) // inttostring
 	fmt.Printf(str)
 
+	// =========string转基本类型 strconv包=====
+	// ParseInt ParseUint ParseFloat ParseBool
+	var str2 = "1234"
+	var num1 int
+	num1 = strconv.ParseInt(str2)
+	fmt.Println(num1)
 }
