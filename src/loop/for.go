@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func main2() {
 	//for循环4要素
 	// 1 循环变量初始化
 	// 2 循环条件， 一定是返回bool类型的表达式
@@ -25,7 +25,7 @@ func main() {
 
 	// 第三种写法, 等同于for ;; {} 无限循环， 这种写法通常需要和break一起使用
 	k := 1
-	for {
+	for { // 等价 for ;; {}
 		if k < 10 {
 			fmt.Println("ok")
 			k++
@@ -33,6 +33,11 @@ func main() {
 			break //break 退出循环
 		}
 	}
+
+	// 循环判断条件必须是返回一个bool的表达式
+	// for i := 0; 1999; i++ { // 会报错：  non-bool 1999 (type int) used as for condition
+	// 	fmt.Println(333)
+	// }
 
 	// --------------------字符串遍历------------------------
 	// 方法1

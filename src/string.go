@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+
+	//
 	a := "hello world"
 
 	// go字符串类型不能改变
