@@ -13,7 +13,19 @@ func typeCheck(items ...interface{}) {
 		}
 	}
 }
-func main() {
+
+func init() {
+	fmt.Println("aaaa")
+}
+
+func init() {
+	fmt.Println("bbb")
+}
+
+func init() {
+	fmt.Println("vvvv")
+}
+func exec01() {
 	n1 := 1
 	n2 := 2.3
 	n3 := false

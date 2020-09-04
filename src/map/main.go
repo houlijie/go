@@ -7,6 +7,8 @@ func main() {
 		"aaa": "aa",
 	}
 
+	fmt.Println(len(map1))
+
 	map2 := map1
 	map2["bbbb"] = "bb"
 	map1["dd"] = "dd"
@@ -30,5 +32,8 @@ func main() {
 
 	// map切片
 	mapSlice1 := make([]map[string]int, 2)
+	// mapSlice1[0]["1"] = 100 // err 没有初始化map, assignment to entry in nil map
+	mapSlice1[0] = make(map[string]int, 2)
+	mapSlice1[0]["aa"] = 1
 	fmt.Println(mapSlice1)
 }

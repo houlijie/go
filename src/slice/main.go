@@ -4,7 +4,32 @@ import (
 	"fmt"
 )
 
+func ss1() []int {
+	s1 := make([]int, 0, 1)
+	s1[0] = 10
+	return s1
+}
+
 func main() {
+
+	s1 := make([]int, 1, 1)
+	var n1 int = 10
+	s1[0] = n1
+	fmt.Println(s1)
+
+	fmt.Println(s1)
+
+	ary := []int{10, 20, 30, 40}
+
+	s := ary[0:2]
+	fmt.Printf("%v,    %p\n", s, &s)
+
+	s = append(s, 999)
+
+	fmt.Printf("%v, %p\n", ary, &ary)
+	fmt.Printf("%v,    %p\n", s, &s)
+	return
+
 	// 使用方式一：直接引用一个数组
 	// 切片是数组的一个引用， 遵循引用传递的机制
 	// 切片的长度是可变的， 是一个可以动态变化数组
@@ -29,8 +54,8 @@ func main() {
 	var slice2 []int = make([]int, 4, 10) // make(类型, len, cap)
 	fmt.Println(slice2)
 
-	sliceAppend := append(slice1, slice1)
-	fmt.Println("sliceAppend=", sliceAppend)
+	// sliceAppend := append(slice2, slice1)
+	// fmt.Println("sliceAppend=", sliceAppend)
 
 	var slice3 []int
 	// slice3[0] = 11 // 这里就是错误的， runtime error: index out of range
