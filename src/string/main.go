@@ -41,7 +41,12 @@ func f4() (x int) {
 	return 5
 }
 func main() {
-	fmt.Println(f4())
+	s := "sss"
+	s1 := []rune(s)
+	for i, v := range s1 {
+		fmt.Printf("%v => %c", i, v)
+	}
+	// fmt.Println(f4())
 	// 常用函数
 	// len返回字节数
 	// var name = "zhangsan"

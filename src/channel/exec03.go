@@ -34,9 +34,10 @@ func main() {
 	ch2 := make(chan bool, 1)
 
 	go write(ch1)
+	time.Sleep(time.Second)
 	// 读写的频率可以不一致
-	// go read(ch1, ch2) //  只写没有读会发生阻塞fatal error: all goroutines are asleep - deadlock!
-	// time.Sleep(time.Second * 10)
+	go read(ch1, ch2) //  只写没有读会发生阻塞fatal error: all goroutines are asleep - deadlock!
+	time.Sleep(time.Second * 10)
 
 	for i := 0; i < 2; i++ {
 		go read(ch1, ch2)

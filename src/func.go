@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	_ "strconv"
 )
 
@@ -41,7 +42,7 @@ func f5(y ...int) { // 可变参数必须写在参数的最后
 
 var (
 	// 全局匿名函数
-	fc3 = func(x int, y int) int {
+	fc6 = func(x int, y int) int {
 		return x * y
 	}
 )
@@ -51,17 +52,17 @@ func cls1(name string) func(string) string {
 	return name
 }
 
-// func init() {
-// 	// var Num1 = 11
-// }
+func init() {
+	// var Num1 = 11
+}
 
 func main() {
-	// //
-	// fmt.Println("num1=", Num1)
-	// var name = ""
-	// name = strconv.ParseInt(name)
+	//
+	fmt.Println("num1=", Num1)
+	var name = ""
+	name = strconv.ParseInt(name)
 
-	// 匿名函数直接用
+	匿名函数直接用
 	var fc1 = func(x int) int {
 		return x
 	}(1)

@@ -1,33 +1,29 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"runtime"
+	"time"
 )
 
-func g1() {
-	defer fmt.Println("A.defer")
-	func() {
-		defer fmt.Println("B.defer")
-		// 结束协程
-		defer fmt.Println("C.defer")
-		fmt.Println("B")
-	}()
-	runtime.Goexit() //终止调用它的go程
-	fmt.Println("A")
-}
-func g2() {
-	for i := 0; i < 10; i++ {
-		fmt.Println(i)
-	}
-}
-
-/*
-	Goexit终止调用它的go程。其它go程不会受影响。Goexit会在终止该go程前执行所有defer的函数。
-*/
 func main() {
-	go g2()
-	go g1()
-	for {
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	go func(ctx context.Context) {
+		for {
+			select {
+			case <-ctx.Done():
+				fmt.Println("监控退出，停止了...")
+				return
+			default:
+				fmt.Println("goroutine监控中...")
+				time.Sleep(2 * time.Second)
+			}
+		}
+	}(ctx)
+
+	fmt.Println("可以了，通知监控停止")
+	defer cancel()
+	//为了检测监控过是否停止，如果没有监控输出，就表示停止了
+	time.Sleep(5 * time.Second)
+
 }

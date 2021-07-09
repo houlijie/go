@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+	"sync/atomic"
+	"unsafe"
+)
 
 /*
 	channel 引用
@@ -26,6 +31,23 @@ func send(ch <-chan int) {
 
 // 只写
 func wr(ch chan<- int) {
+
+}
+
+type entry struct {
+	p unsafe.Pointer
+}
+
+type a struct {
+	mu sync.Mutex
+	read atomic.Value
+	dirty map[interface{}]*entry
+	misses int
+}
+
+type readonly struct {
+	m map[interface{}]*entry
+	ammended bool
 
 }
 
@@ -62,14 +84,14 @@ func main() {
 	fmt.Printf("num1=%d, num2=%d, num3=%d\n", num1, num2, num3)
 
 	// 在没有使用协程的情况下 数据已取出再继续取， 会报错
-	// num4 := <-ch
-	// fmt.Println("num4=", num4) // fatal error: all goroutines are asleep - deadlock!
+	num4 := <-ch
+	fmt.Println("num4=", num4) // fatal error: all goroutines are asleep - deadlock!
 
 	// 关闭，关闭后不能继续写入 可以继续读取
 	close(ch)
 	// ch <- 10 // panic: send on closed channel
-	num4 := <-ch
-	fmt.Println("num4=", num4) // 23 关闭后还可以继续读取
+	num5 := <-ch
+	fmt.Println("num5=", num5) // 23 关闭后还可以继续读取
 
 	// channel遍历 for range,不能使用for, 因为len每次取出都会变化，取出类似pop
 	/*
@@ -82,7 +104,7 @@ func main() {
 	ch2 <- 2
 	ch2 <- 3
 	close(ch2)           // fatal error: all goroutines are asleep - deadlock!
-	close(ch2)           // panic: close of closed channel
+	// close(ch2)           // panic: close of closed channel
 	for v := range ch2 { // notice: 管道没有index
 		fmt.Println(v)
 	}

@@ -1,15 +1,29 @@
-package file
+package main
 
-import "os"
+import (
+	"bufio"
+	"os"
+)
 
-func write() {
-	filePath := "example.txt"
-	file, err := os.OpenFile(filePath, O_WRONLY|O_CREATE, 0666)
+func main() {
+	filePath := "t.txt"
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		return
 	}
 
-	defer file.Close()
+	defer f.Close()
 
-	str := "hello world"
+	str := "hello world\n"
+	// 1、普通写入
+	// f.WriteString(str)
+
+	// 2、缓存写入
+	writer := bufio.NewWriter(f)
+
+	writer.WriteString(str)
+
+	writer.Flush()
+
 }
+
