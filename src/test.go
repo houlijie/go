@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
 	"sync/atomic"
 	"unsafe"
@@ -91,7 +92,103 @@ func a() {
 	fmt.Println("normally returned from a")
 }
 
+type student struct {
+	Name string
+}
+
+func zhoujielun(v interface{}) {
+	switch t := v.(type) {
+	case *student:
+		a := v.(*student)
+		fmt.Println(a.Name)
+	default:
+		fmt.Println(t)
+	}
+}
+
+
+type Student struct {
+	number int
+	realname string
+	age int
+}
+func (t *Student) String() string {
+	return fmt.Sprintf("学号: %d\n真实姓名: %s\n年龄: %d\n", t.number, t.realname, t.age)
+}
+
+type People struct{}
+
+func (p *People) ShowA() {
+	fmt.Println("showA")
+	p.ShowB()
+}
+func (p *People) ShowB() {
+	fmt.Println("showB")
+}
+
+type Teacher struct {
+	People
+}
+
+func (t *Teacher) ShowB() {
+	fmt.Println("teacher showB")
+}
+
 func main() {
+	t := Teacher{}
+	t.ShowA()
+	return
+	runtime.GOMAXPROCS(1)
+	wg := sync.WaitGroup{}
+	wg.Add(20)
+	for i := 0; i < 10; i++ {
+		go func() {
+			fmt.Println("i: ", i)
+			wg.Done()
+		}()
+	}
+	for i := 0; i < 10; i++ {
+		go func(i int) {
+			fmt.Println("i: ", i)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
+
+	return
+	defer func() { fmt.Println("打印前") }()
+	defer func() { fmt.Println("打印中") }()
+	defer func() { fmt.Println("打印后") }()
+
+	panic("触发异常")
+
+	var i byte
+	go func() {
+		for i = 0; i <= 255; i++ {
+		}
+	}()
+	fmt.Println("Dropping mic")
+	// Yield execution to force executing other goroutines
+	runtime.Gosched()
+	runtime.GC()
+	fmt.Println("Done")
+
+	return
+
+	stu := &Student{
+		number: 1,
+		realname: "王小明",
+		age: 18,
+	}
+	fmt.Println(stu)
+
+	return
+
+	zhoujielun(&student{
+		Name: "zhangsan",
+	})
+
+	return
 
 	a()
 	fmt.Println("normally returned from main")
