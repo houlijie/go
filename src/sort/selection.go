@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 /*
@@ -10,15 +9,12 @@ import (
 	//  从数列中找到最大， 跟最末尾交换位置
  */
 func sort(a []int) []int  {
-	sort(a)
-	math.Abs()
 	if len(a) == 0 {
 		return a
 	}
 
 	for end := len(a) - 1; end > 0 ; end-- {
 		maxIndex := 0
-		// @notice <=
 		for i := 0; i <= end; i++ {
 			if a[maxIndex] < a[i] {
 				maxIndex = i
