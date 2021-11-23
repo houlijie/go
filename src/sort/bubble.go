@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 /*
-	冒泡排序(稳定排序)
+	冒泡排序 o(n^2) 稳定排序
  */
 func bubble(arr []int) {
 	for i := 0; i < len(arr); i++ {
@@ -36,16 +36,21 @@ func bubble2(arr []int)  {
 }
 
 func bb(a []int) []int  {
-	for i := len(a) - 1; i > 0; i-- {
-		sortedIndex := 1
-		for j := 1; j < i; j++ {
-			if a[j] < a[j - 1] {
-				a[j], a[j - 1] = a[j - 1], a[j]
-				sortedIndex = j
+	x := 0
+	for i := len(a) -1 ; i > 0; i-- {
+		fmt.Println(i)
+		sortedIdx := 1
+		for j := 1; j <= i; j++ {
+			x++
+			if a[j] < a[j-1] {
+				a[j] , a[j-1] =  a[j-1], a[j]
+				sortedIdx = j
 			}
 		}
-		i = sortedIndex
+		i = sortedIdx
 	}
+	fmt.Println(x)
+
 
 	return a
 }
