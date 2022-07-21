@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	_ "strconv"
+	"unsafe"
 )
 
 func f1() int {
@@ -40,7 +41,54 @@ func f4() (x int) {
 	}(x)
 	return 5
 }
+
+type hchan struct {
+	// channel中元素的个数
+	qcount uint
+	// 缓冲区环形队列大小
+	dataqsize uint
+	// 缓冲区数组指针
+	buf      unsafe.Pointer
+	elemsize uint16
+
+	closed uint32
+	// 元素类型
+	elemtype *_type
+	// 发送操作的位置index
+	sendx uint
+	// 接受操作的index
+	recvx uint
+	// 待接收列表
+	recvq waitq
+	// 待发送列表
+	sendq waitq
+}
+
+//  sudog展示了一个在等待列表中的g， 比如说待发送/待接收
+type sudog struct {
+	g    *g
+	next *sudog
+	prev *sudog
+	elem unsafe.Pointer
+}
+type waitq struct {
+	first *sudog
+	last  *sudog
+}
+
 func main() {
+
+	for i := 0; i < 5; i++ {
+		switch i {
+		case 0:
+			fmt.Println(i)
+		case 1:
+		case 2:
+			fmt.Println(2)
+		}
+
+	}
+	return
 	s := "sss"
 	s1 := []rune(s)
 	for i, v := range s1 {

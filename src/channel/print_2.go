@@ -10,7 +10,8 @@ func odd1(x int, A chan bool, B chan bool)  {
 	for i := 1; i <= x; i++ {
 		ok := <- A
 		if ok && i % 2 == 1 {
-			fmt.Println("i = ", i)
+			fmt.Println
+			("i = ", i)
 			B <- true
 		}
 	}
