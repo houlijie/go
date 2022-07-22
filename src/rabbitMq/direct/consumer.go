@@ -3,10 +3,10 @@ package direct
 import (
 	"log"
 
-	"rabbitMq/util"
+	"go/src/rabbitMq/util"
 )
 
-func Consumer()  {
+func Consumer() {
 	conn := util.ConnOpen()
 	defer util.ConnClose(conn)
 
@@ -23,7 +23,6 @@ func Consumer()  {
 		util.FailOnError(err, "获取消息失败")
 	}
 
-
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
@@ -36,7 +35,5 @@ func Consumer()  {
 	<-forever
 
 	// <-forever
-
-
 
 }

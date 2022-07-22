@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"runtime"
 	"sync"
-	"sync/atomic"
-	"unsafe"
+	"time"
 )
 
 func assert(i interface{}) {
+
 	switch i.(type) {
 	case string:
 		fmt.Println(i.(string))
@@ -36,28 +37,6 @@ const (
 )
 
 const (
-	// A = 1
-	// B = iota
-	// C
-)
-
-type entry struct {
-	p unsafe.Pointer
-}
-
-type readonly struct {
-	m map[interface{}]*entry
-	ammend bool
-}
-
-type xx struct {
-	mu sync.Mutex
-	read atomic.Value
-	dirty map[interface{}]*entry
-	misses int
-}
-
-const (
 	AA, BB = iota + 2, iota + 3
 	A, B
 )
@@ -65,6 +44,7 @@ const (
 const BizGroup int = 0xFFFF
 
 var c = make(chan int)
+
 // var a int
 // func f() {
 // 	a = 1
@@ -106,12 +86,12 @@ func zhoujielun(v interface{}) {
 	}
 }
 
-
 type Student struct {
-	number int
+	number   int
 	realname string
-	age int
+	age      int
 }
+
 func (t *Student) String() string {
 	return fmt.Sprintf("学号: %d\n真实姓名: %s\n年龄: %d\n", t.number, t.realname, t.age)
 }
@@ -134,12 +114,180 @@ func (t *Teacher) ShowB() {
 	fmt.Println("teacher showB")
 }
 
+type S1 struct {
+	name string
+	age  int
+}
+
+type S2 struct {
+	name string
+	age  int
+}
+
+type S3 struct {
+	hellow string
+	S2
+}
+
+type hh interface {
+	SetName(s string)
+	GetName() string
+}
+
+type hhs struct {
+	name string
+	age  int
+	sex  int
+}
+
+func (h *hhs) SetName(s string) {
+	h.name = s
+}
+
+func (h *hhs) GetName() string {
+	return h.name
+}
+
+func (s S2) String() string {
+	return fmt.Sprintf("s2 name is %s. age is %d", s.name, s.age)
+}
+
+func (s S3) String() string {
+	return fmt.Sprintf("s3 said: %s", s.hellow)
+}
+
+var sinTest string
+
+type oncx struct {
+	m sync.Once
+}
+
+var onc oncx
+
+func singleton() {
+	onc.m.Do(func() {
+
+	})
+}
+
 func main() {
+
+	fmt.Println(sinTest)
+
+	ch := make(chan int)
+
+	go func() {
+		<-ch
+		fmt.Println("==")
+		time.Sleep(time.Second * 5)
+		_, _ = http.Get("http://0.0.0.0:8089")
+	}()
+	time.Sleep(time.Second * 3)
+
+	return
+
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func(i int) {
+			fmt.Println("i=", i)
+			wg.Done()
+		}(i)
+	}
+
+	err := wg.Wait
+	if err != nil {
+		fmt.Println("=====", err)
+	}
+
+	return
+
+	sqlStr := fmt.Sprintf("select %s from %s where buyer_id = %d and batch_num = '%s'", "111", "www", 112, ";!@#$$##%^^&***()")
+	fmt.Printf(sqlStr)
+	return
+
+	h := &hhs{}
+	h.SetName("hlj")
+	fmt.Printf(h.GetName())
+
+	return
+	s := S2{name: "zhangsan", age: 15}
+	s3 := S3{hellow: "hello world", S2: s}
+	fmt.Printf("hahahahh: %s", s3)
+	return
+	xxxx := [4]int{1, 2, 3, 4}
+
+	fct1 := func(x [4]int) int {
+		x[2] = 333
+		return x[2]
+	}
+
+	fmt.Println(fct1(xxxx), xxxx)
+
+	return
+
+	// s1 := interface{}(&S1{
+	// 	"aa", 1,
+	// })src/algo/josephus.go
+	//
+	// switch xx := s1.(type) {
+	// case *S1:
+	// 	xx.name = "hlj"
+	// 	fmt.Println("s1", xx)
+	// case *S2:
+	// 	xx.name = "s2"
+	// 	fmt.Println("s2", xx)
+	//
+	// default:
+	// 	fmt.Println("xxxx", xx)
+	// }
+	//
+	// return
+	// name := map[int]int{
+	// 	1: 1,
+	// 	2:2,
+	// }
+	// // var name interface{}
+	// // name = 22
+	//
+	// fmt.Println(interface{}(name).(int))
+	//
+	// v, ok := interface{}(name).(int)
+
+	// v[1] = "ssss"
+	// fmt.Println(v, ok, interface{}(name), reflect.TypeOf(v).Elem())
+
+	// name := [5]int{1,2,3,4,5}
+	// name1 := name[1:]
+	// fmt.Println(len(name1), cap(name1), name1)
+
+	name := make(chan int, 1)
+	name <- 1
+	close(name)
+goto1:
+	for {
+		select {
+		case _, ok := <-name:
+			if !ok {
+				break goto1
+				name = make(chan int)
+			}
+			fmt.Println("========")
+		default:
+			fmt.Println("nnnnnnnnn")
+			goto goto2
+		}
+	}
+
+goto2:
+	fmt.Println("===goto2")
+
+	return
+
 	t := Teacher{}
 	t.ShowA()
 	return
 	runtime.GOMAXPROCS(1)
-	wg := sync.WaitGroup{}
 	wg.Add(20)
 	for i := 0; i < 10; i++ {
 		go func() {
@@ -176,9 +324,9 @@ func main() {
 	return
 
 	stu := &Student{
-		number: 1,
+		number:   1,
 		realname: "王小明",
-		age: 18,
+		age:      18,
 	}
 	fmt.Println(stu)
 
@@ -189,8 +337,6 @@ func main() {
 	})
 
 	return
-
-	a()
 	fmt.Println("normally returned from main")
 	//
 	// fmt.Errorf("sss")
@@ -232,13 +378,9 @@ func main() {
 	// 	println("d > b")
 	// }
 
-
-
-
 	// go f()
 	// c <- 0
 	// print(a)
-
 
 	// fmt.Println(BizGroup)
 	//
@@ -266,7 +408,6 @@ func main() {
 	// // 	fmt.Println("sss", x)
 	// // }()
 	// // ch <- 1
-
 
 	// var c = make(chan int)
 	// c <- 1

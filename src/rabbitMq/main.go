@@ -1,10 +1,11 @@
-package main
+package rabbitMq
 
 import (
 	"rabbitMq/direct"
 )
+
 //
-func main()  {
+func main() {
 	// direct.Producer()
 
 	direct.Consumer()
