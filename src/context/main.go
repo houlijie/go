@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -11,7 +12,10 @@ func main() {
 	ctx, cancel := context.WithDeadline(context.Background(), dl)
 	defer cancel()
 	select{
-		case ctx.Done()
-		
+	case <-ctx.Done():
+		fmt.Println(ctx.Err())
+	case <-time.After(time.Microsecond * 2):
+		fmt.Println("timeout...")
 	}
 }
+bps8yRXJiqf6IzI6

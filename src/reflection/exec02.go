@@ -11,6 +11,7 @@ type cat struct {
 
 // 通过反射修改Name
 func test(i interface{}) {
+	singlefl
 	v := reflect.ValueOf(i) // v kind is ptr
 	vt := reflect.TypeOf(i)
 
